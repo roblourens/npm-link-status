@@ -6,10 +6,11 @@ import { ChildProcess } from 'child_process';
 
 import { hasLinkedModules, getLinkedModules } from './linkedModules';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('npm-link-status.showLinkedModules', showLinkedModules)
 
-    setInterval(checkForLinkedModules, 1000);
+    await checkForLinkedModules();
+    setInterval(checkForLinkedModules, 10 * 1000);
 }
 
 const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -29,7 +30,7 @@ async function getLinkedModuleItems(rootPath: string): Promise<vscode.QuickPickI
     return linkedModules.map(m => {
         return <vscode.QuickPickItem>{
             label: m.name,
-            description: m.actualPath
+            description: '→ ' + m.actualPath
         };
     });
 }
