@@ -17,8 +17,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.linkstatus.sayHello",
-        "title": "Hello World"
+        "command": "npm-link-status.showLinkedModules",
+        "title": "Show linked NPM modules"
       }
     ]
   },
