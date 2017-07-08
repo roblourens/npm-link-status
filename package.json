@@ -1,7 +1,7 @@
 {
   "name": "npm-link-status",
   "displayName": "NPM Link Status",
-  "description": "",
+  "description": "Adds a status bar item when linked npm modules are detected",
   "version": "0.0.1",
   "publisher": "roblourens",
   "engines": {
@@ -11,8 +11,12 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "workspaceContains:node_modules"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roblourens/npm-link-status.git"
+  },
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
