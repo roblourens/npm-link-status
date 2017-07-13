@@ -1,6 +1,6 @@
 {
   "name": "npm-link-status",
-  "displayName": "NPM Link Status",
+  "displayName": "npm Link Status",
   "description": "Adds a status bar item when linked npm modules are detected",
   "version": "0.0.1",
   "publisher": "roblourens",
@@ -23,7 +23,7 @@
     "commands": [
       {
         "command": "npm-link-status.showLinkedModules",
-        "title": "Show linked NPM modules"
+        "title": "Show linked npm modules"
       }
     ]
   },
