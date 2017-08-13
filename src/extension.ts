@@ -36,14 +36,17 @@ async function getLinkedModuleItems(rootPath: string): Promise<vscode.QuickPickI
 }
 
 async function checkForLinkedModules(): Promise<void> {
-    const rootPath = vscode.workspace.rootPath;
-    if (!rootPath) return;
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || !workspaceFolders.length) return;
 
-    if (await hasLinkedModules(rootPath)) {
-        item.show();
-    } else {
-        item.hide();
+    for (let rootFolder of workspaceFolders) {
+        if (await hasLinkedModules(rootFolder.uri.fsPath)) {
+            item.show();
+            return;
+        }
     }
+
+    item.hide();
 }
 
 export function deactivate() {
