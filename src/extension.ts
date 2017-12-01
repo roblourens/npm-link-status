@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-const path = require('path');
-const fs = require('fs');
+import * as path from 'path';
+import * as fs from 'fs';
 import { ChildProcess } from 'child_process';
 
 import { hasLinkedModules, getLinkedModules } from './linkedModules';
@@ -19,18 +19,29 @@ item.tooltip = 'Linked NPM modules detected';
 item.command = 'npm-link-status.showLinkedModules';
 
 async function showLinkedModules(): Promise<void> {
-    const rootPath = vscode.workspace.rootPath;
-    if (!rootPath) return;
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders || !workspaceFolders.length) return;
 
-    vscode.window.showQuickPick(getLinkedModuleItems(rootPath), { placeHolder: 'Linked NPM modules' });
+    const linkedModulesP = Promise.all(workspaceFolders.map(rootFolder => {
+        return getLinkedModuleItems(rootFolder.uri.fsPath, workspaceFolders.length > 1);
+    })).then(linkedModules => {
+        // Flatten
+        return linkedModules.reduce<vscode.QuickPickItem[]>((acc, modules) => acc.concat(modules), []);
+    });
+
+    vscode.window.showQuickPick(linkedModulesP, { placeHolder: 'Linked NPM modules' });
 }
 
-async function getLinkedModuleItems(rootPath: string): Promise<vscode.QuickPickItem[]> {
+async function getLinkedModuleItems(rootPath: string, isMultiroot: boolean): Promise<vscode.QuickPickItem[]> {
     const linkedModules = await getLinkedModules(rootPath);
     return linkedModules.map(m => {
+        const description = isMultiroot ?
+            path.basename(rootPath) + ' → ' + m.actualPath :
+            '→ ' + m.actualPath;
+
         return <vscode.QuickPickItem>{
             label: m.name,
-            description: '→ ' + m.actualPath
+            description
         };
     });
 }
