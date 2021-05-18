@@ -15,7 +15,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 item.text = 'npm $(link)';
-item.tooltip = 'Linked NPM modules detected';
+item.tooltip = 'Linked npm modules detected';
 item.command = 'npm-link-status.showLinkedModules';
 
 async function showLinkedModules(): Promise<void> {
@@ -29,7 +29,7 @@ async function showLinkedModules(): Promise<void> {
         return linkedModules.reduce<vscode.QuickPickItem[]>((acc, modules) => acc.concat(modules), []);
     });
 
-    vscode.window.showQuickPick(linkedModulesP, { placeHolder: 'Linked NPM modules' });
+    vscode.window.showQuickPick(linkedModulesP, { placeHolder: 'Linked npm modules' });
 }
 
 async function getLinkedModuleItems(rootPath: string, isMultiroot: boolean): Promise<vscode.QuickPickItem[]> {
