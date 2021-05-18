@@ -2,11 +2,12 @@
   "name": "npm-link-status",
   "displayName": "npm Link Status",
   "description": "Adds a status bar item when linked npm modules are detected",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "publisher": "roblourens",
-  "icon": "images/node-debug-icon.png",
+  "icon": "images/npm_icon.png",
+  "bugs": "https://github.com/roblourens/npm-link-status/issues",
   "engines": {
-    "vscode": "^1.11.0"
+    "vscode": "^1.15.0"
   },
   "categories": [
     "Other"
@@ -34,11 +35,11 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^13.7.7",
     "mocha": "^2.3.3",
-    "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32"
+    "typescript": "^3.8.3",
+    "vscode": "^1.0.0"
   },
   "dependencies": {
     "promisify-node": "^0.4.0"

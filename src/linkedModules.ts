@@ -1,8 +1,11 @@
 import * as path from 'path';
-import * as promisify from 'promisify-node';
 
-import * as _fs from 'fs'; // For typings only
-const fs = promisify('fs');
+import * as fs from 'fs';
+import * as util from 'util';
+
+const readdir = util.promisify(fs.readdir);
+const readlink = util.promisify(fs.readlink);
+const lstat = util.promisify(fs.lstat);
 
 export interface ILinkedModule {
     name: string;
@@ -21,7 +24,7 @@ export async function getLinkedModules(rootPath: string): Promise<ILinkedModule[
 async function _getLinkedModules(nodeModulesDir: string): Promise<ILinkedModule[]> {
     let modules: string[];
     try {
-        modules = await fs.readdir(nodeModulesDir);
+        modules = await readdir(nodeModulesDir);
     } catch (e) {
         return [];
     }
@@ -53,7 +56,7 @@ async function _getLinkedModulesFromDir(nodeModulesDir: string, modules: string[
 }
 
 async function _getSymlinkTarget(folderPath: string): Promise<string> {
-    const target = await fs.readlink(folderPath);
+    const target = await readlink(folderPath);
     const absTarget = path.resolve(folderPath, '..', target);
     if (await isLinked(absTarget)) {
         return _getSymlinkTarget(absTarget);
@@ -64,7 +67,7 @@ async function _getSymlinkTarget(folderPath: string): Promise<string> {
 
 async function isLinked(folderPath: string): Promise<boolean> {
     try {
-        const stat: _fs.Stats = await fs.lstat(folderPath);
+        const stat: fs.Stats = await lstat(folderPath);
         return stat.isSymbolicLink();
     } catch (e) {
         return false;
